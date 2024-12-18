@@ -1,0 +1,29 @@
+﻿kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: kroxytester
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: kroxytester
+  template:
+    metadata:
+      labels:
+        app: kroxytester
+    spec:
+      containers:
+        - name: kroxytester
+          image: 'quay.io/ggrimwoo/kroxy-perf-test:0.0.3-amd64'
+          env:
+            - name: TOPIC
+              value: ggrimwookroxylicioustest
+            - name: NUM_RECORDS
+              value: '90000'
+            - name: THROUGHPUT
+              value: '500'
+            - name: BOOTSTRAP
+              value: 'kroxylicious-service.kroxylicious.svc.cluster.local:30192'
+            - name: RECORD_SIZE
+              value: '1000'
+          imagePullPolicy: Always
