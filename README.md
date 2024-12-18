@@ -4,6 +4,10 @@ This repo is really just a collection of files I used and collected while testin
 
 Many of the YAML files here are borrowed and modified from ones in the [Kroxylicious](https://github.com/kroxylicious/kroxylicious) repository.
 
+## Logs
+
+The logs produced by Kroxylicious exceed GitHub's 100MB file size limit (they're each about 2GiB of plain text), so I can't put them here. Reach out to me if you want them and I can try and get them to you some other way.
+
 ## Building the Kroxytester image
 
 The image is built with Podman on top of an official Apache Kafka image (Kafka 3.8 is what I've got in the Dockerfile because at the time it's what Kroxylicious supported, but I imagine just about any Kafka release version should work). It's not particularly sophisticated; it logs a start time for future reference (so you can check in the logs afterwards when the testers started vs when the proxy noticed), then runs Kafka's in-built `kafka-producer-perf-test.sh` (the values are configurable via env vars, but the defaults are mostly what I used) to throw a bunch of stuff at the proxy, then it logs an end time and loops forever doing nothing until killed by either you or k8s. The looping is to stop it from restarting the perf test script, which makes it impossible to tell what volume of messages and requests went through Kroxylicious and ruins the whole test.
